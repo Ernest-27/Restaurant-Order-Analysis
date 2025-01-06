@@ -1,0 +1,89 @@
+--To select everything in my menu table
+
+select * from menu_items;
+
+--The Total items in the menu table
+
+select count(*) from menu_items;
+
+--To compare the prices of all items on the menu
+
+select item_name, price from menu_items
+order by price desc;
+
+--The count of items in each category
+
+select category, count(*) from menu_items
+group by category;
+
+--The sum of the prices of items in each category
+
+select category, sum(price) as sum_price from menu_items
+group by category;
+
+
+--The total list of items in the Italian category and their prices
+
+select item_name, category, price from menu_items
+where category = 'Italian'
+order by price;
+
+--To select all items from the order_details table
+
+select * from order_details;
+
+--To know the date range of the table
+
+select min(order_date), max(order_date) from order_details;
+
+--To determine the total number of orders placed
+
+select count(distinct order_id) from order_details;
+
+--To join the both tables
+
+select * from order_details
+left join menu_items
+on order_details.item_id = menu_items.menu_item_id;
+
+--To create a view of this joined table
+
+create view table_view as 
+select * from order_details
+left join menu_items
+on order_details.item_id = menu_items.menu_item_id;
+
+--To view the joined table
+
+select * from table_view
+
+--The total price of the top 5 most expensive order id
+
+select order_id, sum(price) from table_view
+group by order_id
+order by sum(price)desc
+limit 5;
+
+--The total order for the different days of the week
+
+select count(*) as num_dishes_day, dayname(order_date) as day_name from order_details
+group by day_name
+order by num_dishes_day desc;
+
+--The most busiest date in the dataset
+
+select count(*) as most_orders, order_date from order_details
+group by order_date
+order by most_orders desc;
+
+--The busiest hour of the days of the week
+
+select hour(order_time)as hour_interval, count(order_id) as busiet_hour from order_details
+group by hour_interval
+order by busiet_hour desc;
+
+
+
+
+
+
